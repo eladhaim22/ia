@@ -68,7 +68,6 @@
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 	</dependencies>
-
 	<build>
 		<finalName>ia-api</finalName>
 		<plugins>

@@ -18,8 +18,7 @@ public class ClipsConfiguration {
     @Bean
     public Environment clipsEnviorment() throws IOException {
         Environment clipsEnvironment = new Environment();
-        File file = new ClassPathResource("lib/p.cpl").getFile();
-        clipsEnvironment.loadFromResource(file.getAbsolutePath());
+        clipsEnvironment.loadFromResource("lib/p.cpl");
         clipsEnvironment.reset();
         return clipsEnvironment;
     }
