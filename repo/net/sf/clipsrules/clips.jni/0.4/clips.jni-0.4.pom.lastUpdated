@@ -1,0 +1,6 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Mon Jun 11 19:39:15 ART 2018
+https\://repo.maven.apache.org/maven2/.lastUpdated=1528756755502
+@default-mirrorId-http\://10.110.20.21\:8081/repository/maven-public/.lastUpdated=1528756718626
+http\://10.110.20.21\:8081/repository/maven-public/.error=Could not transfer artifact net.sf.clipsrules\:clips.jni\:pom\:0.4 from/to mirrorId (http\://10.110.20.21\:8081/repository/maven-public)\: Connect to 10.110.20.21\:8081 [/10.110.20.21] failed\: Connection timed out (Connection timed out)
+https\://repo.maven.apache.org/maven2/.error=

@@ -1,0 +1,272 @@
+(deftemplate paciente
+	(slot antecedentes-clinicos(type SYMBOL)
+		(allowed-values familiares-con-melanomas
+						manchas-similares
+						toma-medicamentos
+						alergico
+						toma-sol-sin-cuidado
+						nose
+		)
+		(default nose)
+	)
+	(slot cuidados(type SYMBOL)
+		(allowed-values bronceador
+						crema
+						nose
+		)
+		(default nose)
+	)
+	(slot motivo-consulta(type SYMBOL)
+			(allowed-values molestia
+							estetico
+							simple
+							nose
+			)
+		(default nose)
+	)
+)
+;TEMPLATE DIAGNOSTICO
+(deftemplate diagnostico
+	(slot nombre(type SYMBOL)
+			(allowed-values lunar-benigno
+							nevo-verrugoso
+							queratosis-seborreica
+							queratisos-actinica
+							verruga-vulgar
+							posible-tumor-maligno
+							nose
+			)
+		(default nose)
+	)
+	(slot resultado(type SYMBOL)
+			(allowed-values mas-estudios
+							diagnostico-realizado
+							posible
+							nose
+			)
+		(default nose)
+	)
+	(slot accion(type SYMBOL)
+			(allowed-values controlar
+							biopsia
+							extraccion
+							tratamiento
+							diagnostico-exitoso
+							nose
+			)
+		(default nose)
+	)
+)
+;TEMPLATE MANCHA
+(deftemplate mancha
+	(slot color(type SYMBOL)
+			(allowed-values distinto-a-la-piel
+							mas-de-uno
+							blanca
+							rosa
+							piel
+							marron
+							rojiza
+							nose
+			)
+		(default nose)
+	)
+	(slot evolucion(type SYMBOL)
+			(allowed-values crecio-de-golpe
+							rapida
+							muy-rapida
+							moderada
+							lenta
+							muy-lenta
+							sin-cambios
+							nose
+			)
+		(default nose)
+	)
+	(slot origen(type SYMBOL)
+			(allowed-values exposicion-solar
+							nacimiento
+							vph
+							predisposicion-genetica
+							nose
+			)
+		(default nose)
+	)
+	(slot sintoma(type SYMBOL)
+			(allowed-values picazon
+							sangrado
+							asintomatico
+							dolor
+							ardor
+							cambio-de-color
+							nose
+			)
+		(default nose)
+	)
+	(slot pelos(type SYMBOL)
+			(allowed-values si
+							no
+							nose
+			)
+		(default nose)
+	)
+	(slot rasposa(type SYMBOL)
+			(allowed-values poco
+							mucho
+							nose
+			)
+		(default nose)
+	)
+)			
+;TEMPLATE FORMA
+(deftemplate forma
+	(slot asimetria(type SYMBOL)
+			(allowed-values simetro
+							asimetrico			
+							nose
+			)
+		(default nose)
+	)
+	(slot superficie(type SYMBOL)
+			(allowed-values cupula
+							verruga
+							cerebral
+							plana
+							escamosa
+							rugosa
+							lisa
+							nose
+			)
+		(default nose)
+	)
+	(slot diametro(type SYMBOL)
+			(allowed-values mayor-1-mm
+							menor-1-mm
+							nose
+			)
+		(default nose)
+	)
+	(slot elevada(type SYMBOL)
+			(allowed-values igual
+							dispareja
+							nose
+			)
+		(default nose)
+	)
+	(slot borde(type SYMBOL)
+			(allowed-values definido
+							irregular
+							con-escotaduras
+							nose
+			)
+		(default nose)
+	)
+)
+;FIN DEFTEMPLATES ---------------------------------------
+
+;DEFRULES ---------------------------------------
+
+(defrule origen-nacimiento-r01
+	(mancha (pelos si))
+	?A<-(mancha (pelos si) (origen nose))
+	=>
+	(modify ?A (origen nacimiento))
+)
+
+(defrule origen-nacimiento-r02
+	(mancha (origen nacimiento))
+	(or (mancha (evolucion crecio-de-golpe))
+	 (mancha (evolucion rapida))
+	 (mancha (evolucion muy-rapida))
+	 )
+	=>
+	(assert (diagnostico(resultado mas-estudios)(accion controlar)))
+)
+
+(defrule origen-nacimiento-r03
+	(mancha (origen nacimiento) (sintoma cambio-de-color))
+	=>
+	(assert (diagnostico (resultado mas-estudios)(accion controlar)))
+)
+
+(defrule diametro-menor-r04
+	(forma (diametro menor-1-mm))
+	=>
+	(assert (diagnostico (resultado diagnostico-realizado)(accion controlar)))
+)
+
+(defrule diametro-mayor-r05
+	(forma (diametro mayor-1-mm))
+	(or (mancha (evolucion crecio-de-golpe))
+	 (mancha (evolucion rapida))
+	 (mancha (evolucion muy-rapida))
+	 )
+	=>
+	(assert (diagnostico (nombre posible-tumor-maligno)(resultado mas-estudios)(accion biopsia)))
+)
+
+(defrule origen-nacimiento-r06
+	(mancha (origen nacimiento) (evolucion sin-cambios))
+	=>
+	(assert (diagnostico (nombre lunar-benigno)(resultado diagnostico-realizado)(accion controlar)))
+)
+
+(defrule nevo-verrugoso-r07
+	(or (mancha (color piel))
+	 (mancha (color marron))
+	 )
+	(mancha (origen predisposicion-genetica) (sintoma asintomatico))
+	(or (forma (elevada igual))
+	 (forma (elevada dispareja))
+	 )
+	(or (forma (superficie cupula))
+	 (forma (superficie verruga))
+	 (forma (superficie cerebral))
+	 )
+	=>
+	(assert (diagnostico (nombre nevo-verrugoso)(resultado posible)))
+)
+
+(defrule nevo-verrugoso-r08
+	?A <- (diagnostico (nombre nevo-verrugoso) (resultado posible))
+	(paciente (motivo-consulta simple))
+	=>
+	(modify ?A (resultado diagnostico-realizado) (accion diagnostico-exitoso))
+)
+
+(defrule nevo-verrugoso-r09
+	?A <- (diagnostico (nombre nevo-verrugoso) (resultado posible))
+	(or (paciente (motivo-consulta estetico))
+	 (paciente (motivo-consulta molestia))
+	 )
+	=>
+	(modify ?A (resultado diagnostico-realizado) (accion extraccion))
+)
+
+(defrule 1ueratosis-seborreica-r10
+	(mancha (color marron) (rasposa poco) (origen predisposicion-genetica))
+	(forma (superficie escamosa) (borde definido))
+	=>
+	(assert (diagnostico (nombre queratosis-seborreica)(resultado posible)))
+)
+
+;FIN DEFRULES ---------------------------------------
+
+;----------------------------------------------A DEFINIR DESDE JAVA
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
