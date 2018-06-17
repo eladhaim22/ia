@@ -41,49 +41,56 @@ public class DiagnosticService {
     }
 
     public DiagnosticDTO calculateDiagnostic(DiagnosticDTO diagnostic){
-       String a = MessageFormat.format("(assert \n" +
+        String a = MessageFormat.format("(assert \n" +
                         "(paciente \n" +
-                        "(id-paciente {0})\n" +
-                        "(antecedentes-clinicos {1})\n" +
-                        "(cuidados {2})\n" +
-                        "(motivo-consulta {3})\n" +
+                        "(antecedentes-clinicos {0})\n" +
+                        "(cuidados {1})\n" +
+                        "(motivo-consulta {2})\n" +
                         ")\n" +
                         ")",
-                diagnostic.getPersonId(),diagnostic.getAntecedentes(),diagnostic.getCuidados(),diagnostic.getMotivoConsulta());
+                diagnostic.getAntecedentes(),diagnostic.getCuidados(),diagnostic.getMotivoConsulta());
+        clipsEnvironment.eval(a);
 
-        clipsEnvironment.assertString(a);
+        a = MessageFormat.format("(assert \n" +
+                        "(diagnostico \n" +
+                        "(nombre {0})\n" +
+                        "(resultado {1})\n" +
+                        "(accion {1})\n" +
+                        ")\n" +
+                        ")",
+                "nose","nose","nose");
+
+        clipsEnvironment.eval(a);
+
         a = MessageFormat.format("(assert \n" +
                 "(mancha \n" +
-                "(id-paciente {0})\n" +
-                "(color {1})\n" +
-                "(evolucion {2})\n" +
-                "(origen {3})\n" +
-                "(sintoma {4})\n" +
-                "(pelos {5})\n" +
-                "(rasposa {6})\n" +
+                "(color {0})\n" +
+                "(evolucion {1})\n" +
+                "(origen {2})\n" +
+                "(sintoma {3})\n" +
+                "(pelos {4})\n" +
+                "(rasposa {5})\n" +
                 ")\n" +
-                ")",diagnostic.getPersonId(),diagnostic.getStain().getColor(),diagnostic.getStain().getEvolucion(),diagnostic.getStain().getOrigin(),
+                ")",diagnostic.getStain().getColor(),diagnostic.getStain().getEvolucion(),diagnostic.getStain().getOrigin(),
                 diagnostic.getStain().getSintoma(),diagnostic.getStain().getPelos(),diagnostic.getStain().getRasposa());
-        clipsEnvironment.assertString(a);
+        clipsEnvironment.eval(a);
         a = MessageFormat.format("(assert \n" +
                         "(forma \n" +
-                        "(id-paciente {0})\n" +
-                        "(asimetria {1})\n" +
-                        "(superficie {2})\n" +
-                        "(diametro {3})\n" +
-                        "(elevada {4})\n" +
-                        "(borde {5})\n" +
+                        "(asimetria {0})\n" +
+                        "(superficie {1})\n" +
+                        "(diametro {2})\n" +
+                        "(elevada {3})\n" +
+                        "(borde {4})\n" +
                         ")\n" +
-                        ")",diagnostic.getPersonId(),diagnostic.getForm().getAsimetria(),diagnostic.getForm().getSuperficie(),
+                        ")",diagnostic.getForm().getAsimetria(),diagnostic.getForm().getSuperficie(),
                             diagnostic.getForm().getDiametro(),diagnostic.getForm().getElevada(),diagnostic.getForm().getBorde());
 
-        clipsEnvironment.assertString(a);
+        clipsEnvironment.eval(a);
         clipsEnvironment.run();
         String evalstr= "(find-all-facts ((?J diagnostico)) TRUE)";
-        SymbolValue pv = (SymbolValue) clipsEnvironment.eval(evalstr);
-        //FactAddressValue factAddressValue = (FactAddressValue) pv.get(0);
-        //FactAddressValue fv = (FactAddressValue) pv.get(0);
-        FactAddressValue fv = null;
+        MultifieldValue pv = (MultifieldValue) clipsEnvironment.eval(evalstr);
+        FactAddressValue factAddressValue = (FactAddressValue) pv.get(0);
+        FactAddressValue fv = (FactAddressValue) pv.get(0);
         String s = null;
         try {
             diagnostic.setResultado(fv.getFactSlot("resultado").toString());
