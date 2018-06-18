@@ -41,13 +41,7 @@ public class DiagnosticService {
     }
 
     public DiagnosticDTO calculateDiagnostic(DiagnosticDTO diagnostic){
-        String a = MessageFormat.format("(assert \n" +
-                        "(paciente \n" +
-                        "(antecedentes-clinicos {0})\n" +
-                        "(cuidados {1})\n" +
-                        "(motivo-consulta {2})\n" +
-                        ")\n" +
-                        ")",
+        String a = MessageFormat.format("(assert (paciente (antecedentes-clinicos {0})(cuidados {1})(motivo-consulta {2})))",
                 diagnostic.getAntecedentes(),diagnostic.getCuidados(),diagnostic.getMotivoConsulta());
         clipsEnvironment.eval(a);
 
@@ -57,7 +51,7 @@ public class DiagnosticService {
                         "(resultado {1})\n" +
                         "(accion {1})\n" +
                         ")\n" +
-                        ")",
+                        "))",
                 "nose","nose","nose");
 
         clipsEnvironment.eval(a);
@@ -71,7 +65,7 @@ public class DiagnosticService {
                 "(pelos {4})\n" +
                 "(rasposa {5})\n" +
                 ")\n" +
-                ")",diagnostic.getStain().getColor(),diagnostic.getStain().getEvolucion(),diagnostic.getStain().getOrigin(),
+                "))",diagnostic.getStain().getColor(),diagnostic.getStain().getEvolucion(),diagnostic.getStain().getOrigin(),
                 diagnostic.getStain().getSintoma(),diagnostic.getStain().getPelos(),diagnostic.getStain().getRasposa());
         clipsEnvironment.eval(a);
         a = MessageFormat.format("(assert \n" +
@@ -82,8 +76,8 @@ public class DiagnosticService {
                         "(elevada {3})\n" +
                         "(borde {4})\n" +
                         ")\n" +
-                        ")",diagnostic.getForm().getAsimetria(),diagnostic.getForm().getSuperficie(),
-                            diagnostic.getForm().getDiametro(),diagnostic.getForm().getElevada(),diagnostic.getForm().getBorde());
+                        "))",diagnostic.getForm().getAsimetria(),diagnostic.getForm().getSuperficie(),
+                        String.format(java.util.Locale.US,"%.1f", diagnostic.getForm().getDiametro()),diagnostic.getForm().getElevada(),diagnostic.getForm().getBorde());
 
         clipsEnvironment.eval(a);
         clipsEnvironment.run();

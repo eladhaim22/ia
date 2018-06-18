@@ -125,11 +125,11 @@
 														<label for="paciente-antecedentes">Antecedentes</label>
 														<select id="paciente-antecedentes" class="form-control">
 															<option value="nose">No Sé</option>
-															<option value="FamiliaresConMelanomas">Familiares con Melanomas</option>
-															<option value="ManchasSimilares">Manchas Similares</option>
-															<option value="TomaMedicamentos">Toma medicamentos</option>
-															<option value="Alergico">Alérgico</option>
-															<option value="TomaSolSinCuidados">Toma Sol sin cuidados</option>
+															<option value="familiares-con-melanomas">Familiares con Melanomas</option>
+															<option value="manchas-similares">Manchas Similares</option>
+															<option value="toma-medicamentos">Toma medicamentos</option>
+															<option value="alergico">Alérgico</option>
+															<option value="toma-sol-sin-cuidado">Toma Sol sin cuidados</option>
 														</select>
 													</div>
 												</div>
@@ -138,8 +138,9 @@
 														<label for="paciente-cuidados">Cuidados</label>
 														<select id="paciente-cuidados" class="form-control">
 															<option value="nose">No Sé</option>
-															<option value="Bronceador">Bronceador</option>
-															<option value="Crema">Crema</option>
+															<option value="bronceador">Bronceador</option>
+															<option value="crema">Crema</option>
+															<option value="ninguno">Ninguno</option>
 														</select>
 													</div>
 												</div>
@@ -148,8 +149,9 @@
 														<label for="paciente-motivo-consulta">Motivo de la Consulta</label>
 														<select id="paciente-motivo-consulta" class="form-control">
 															<option value="nose">No Sé</option>
-															<option value="Molestia">Molestia</option>
-															<option value="Estetico">Estético</option>
+															<option value="molestia">Molestia</option>
+															<option value="estetico">Estético</option>
+															<option value="simple">Simple</option>
 														</select>
 													</div>
 												</div>
@@ -165,14 +167,14 @@
 													<div class="form-group">
 														<label for="mancha-color">Color</label>
 														<select id="mancha-color" class="form-control">
-															<option value="NoSe">No Sé</option>
-															<option value="Distinto a la piel">Distinto a la piel</option>
-															<option value="Mas de uno">Más de uno</option>
-															<option value="Blanca">Blanca</option>
-															<option value="Rosa">Rosa</option>
-															<option value="Piel">Piel</option>
-															<option value="Marron">Marrón</option>
-															<option value="Rojiza">Rojiza</option>
+															<option value="nose">No Sé</option>
+															<option value="distinto-a-la-piel">Distinto a la piel</option>
+															<option value="mas-de-uno">Más de uno</option>
+															<option value="blanca">Blanca</option>
+															<option value="rosa">Rosa</option>
+															<option value="piel">Piel</option>
+															<option value="marron">Marrón</option>
+															<option value="rojiza-lisa">Rojiza</option>
 														</select>
 													</div>
 												</div>
@@ -180,14 +182,14 @@
 													<div class="form-group">
 														<label for="mancha-evolucion">Evolución</label>
 														<select id="mancha-evolucion" class="form-control">
-															<option value="NoSe">No Sé</option>
-															<option value="CrecioDeGolpe">Creció de Golpe</option>
-															<option value="Rapida">Rapida</option>
-															<option value="MuyRapida">Muy Rapida</option>
-															<option value="Moderada">Moderada</option>
-															<option value="Lenta">Lenta</option>
-															<option value="MuyLenta">Muy Lenta</option>
-															<option value="SinCambios">Sin Cambios</option>
+															<option value="nose">No Sé</option>
+															<option value="crecio-de-golpe">Creció de Golpe</option>
+															<option value="muy-rapida">Muy Rapida</option>
+															<option value="rapida">Rapida</option>
+															<option value="moderada">Moderada</option>
+															<option value="lenta">Lenta</option>
+															<option value="muy-lenta">Muy Lenta</option>
+															<option value="sin-cambios">Sin Cambios</option>
 														</select>
 													</div>
 												</div>
@@ -195,10 +197,11 @@
 													<div class="form-group">
 														<label for="mancha-origen">Origen</label>
 														<select id="mancha-origen" class="form-control">
-															<option value="NoSe">No Sé</option>
-															<option value="ExposicionSolar">Exposición Solar</option>
-															<option value="Nacimiento">Nacimiento</option>
-															<option value="VPH">VPH</option>
+															<option value="nose">No Sé</option>
+															<option value="exposicion-solar">Exposición Solar</option>
+															<option value="nacimiento">Nacimiento</option>
+															<option value="vph">VPH</option>
+															<option value="predisposicion-genetica">Predisposición Genetica</option>
 														</select>
 													</div>
 												</div>
@@ -206,12 +209,13 @@
 													<div class="form-group">
 														<label for="mancha-sintoma">Síntoma</label>
 														<select id="mancha-sintoma" class="form-control">
-															<option value="NoSe">No Sé</option>
-															<option value="Picazon">Picazón</option>
-															<option value="Sangrado">Sangrado</option>
-															<option value="Asintomatico">Asintomático</option>
-															<option value="Dolor">Dolor</option>
-															<option value="Ardor">Ardor</option>
+															<option value="nose">No Sé</option>
+															<option value="picazon">Picazón</option>
+															<option value="sangrado">Sangrado</option>
+															<option value="asintomatico">Asintomático</option>
+															<option value="dolor">Dolor</option>
+															<option value="ardor">Ardor</option>
+															<option value="cambio-de-color">Cambio de Color</option>
 														</select>
 													</div>
 												</div>
@@ -219,7 +223,7 @@
 													<div class="form-group">
 														<label for="mancha-pelos">Pelos</label>
 														<select id="mancha-pelos" class="form-control">
-															<option value="NoSe">No Sé</option>
+															<option value="nose">No Sé</option>
 															<option value="si">Si</option>
 															<option value="no">No</option>
 														</select>
@@ -229,9 +233,9 @@
 													<div class="form-group">
 														<label for="mancha-rasposa">Rasposa</label>
 														<select id="mancha-rasposa" class="form-control">
-															<option value="NoSe">No Sé</option>
-															<option value="Poco">Poco</option>
-															<option value="Mucho">Mucho</option>
+															<option value="nose">No Sé</option>
+															<option value="poco">Poco</option>
+															<option value="mucho">Mucho</option>
 														</select>
 													</div>
 												</div>
@@ -247,9 +251,9 @@
 													<div class="form-group">
 														<label for="mancha-asimetria">Asimetría</label>
 														<select id="mancha-asimetria" class="form-control">
-															<option value="NoSe">No Sé</option>
-															<option value="Simétrico">Simétrico</option>
-															<option value="Asimétrico">Asimétrico</option>
+															<option value="nose">No Sé</option>
+															<option value="simetrico">Simétrico</option>
+															<option value="asimetrico">Asimétrico</option>
 														</select>
 													</div>
 												</div>
@@ -257,14 +261,14 @@
 													<div class="form-group">
 														<label for="mancha-superficie">Superficie</label>
 														<select id="mancha-superficie" class="form-control">
-															<option value="NoSe">No Sé</option>
-															<option value="Cupula">Cúpula</option>
-															<option value="Verruga">Verruga</option>
-															<option value="Cerebral">Cerebral</option>
-															<option value="Plana">Plana</option>
-															<option value="Escamosa">Escamosa</option>
-															<option value="Rugosa">Rugosa</option>
-															<option value="Lisa">Lisa</option>
+															<option value="nose">No Sé</option>
+															<option value="cupula">Cúpula</option>
+															<option value="verruga">Verruga</option>
+															<option value="cerebral">Cerebral</option>
+															<option value="plana">Plana</option>
+															<option value="escamosa">Escamosa</option>
+															<option value="rugosa">Rugosa</option>
+															<option value="lisa">Lisa</option>
 														</select>
 													</div>
 												</div>
@@ -278,9 +282,9 @@
 													<div class="form-group">
 														<label for="mancha-elevada">Elevada</label>
 														<select id="mancha-elevada" class="form-control">
-															<option value="NoSe">No Sé</option>
-															<option value="Igual">Igual</option>
-															<option value="Dispareja">Dispareja</option>
+															<option value="nose">No Sé</option>
+															<option value="igual">Igual</option>
+															<option value="dispareja">Dispareja</option>
 														</select>
 													</div>
 												</div>
@@ -288,10 +292,10 @@
 													<div class="form-group">
 														<label for="mancha-borde">Borde</label>
 														<select id="mancha-borde" class="form-control">
-															<option value="NoSe">No Sé</option>
-															<option value="Definido">Definido</option>
-															<option value="Irregular">Irregular</option>
-															<option value="ConEscotaduras">Con Escotaduras</option>
+															<option value="nose">No Sé</option>
+															<option value="definido">Definido</option>
+															<option value="irregular">Irregular</option>
+															<option value="con-escotaduras">Con Escotaduras</option>
 														</select>
 													</div>
 												</div>

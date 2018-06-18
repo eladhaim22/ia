@@ -6,7 +6,7 @@ import javax.persistence.Embeddable;
 public class Form {
     private String asimetria;
     private String superficie;
-    private String diametro;
+    private float diametro;
     private String escamas;
     private String elevada;
     private String borde;
@@ -27,11 +27,11 @@ public class Form {
         this.superficie = superficie;
     }
 
-    public String getDiametro() {
+    public float getDiametro() {
         return diametro;
     }
 
-    public void setDiametro(String diametro) {
+    public void setDiametro(float diametro) {
         this.diametro = diametro;
     }
 
