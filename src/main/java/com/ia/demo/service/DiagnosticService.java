@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -87,14 +88,92 @@ public class DiagnosticService {
         FactAddressValue fv = (FactAddressValue) pv.get(0);
         String s = null;
         try {
-            diagnostic.setResultado(fv.getFactSlot("resultado").toString());
-            diagnostic.setAccion(fv.getFactSlot("accion").toString());
-            diagnostic.setNombre(fv.getFactSlot("nombre").toString());
+            diagnostic.setResultado(parseResultado(fv.getFactSlot("resultado").toString()));
+            diagnostic.setAccion(parseAccion(fv.getFactSlot("accion").toString()));
+            diagnostic.setNombre(parseNombre(fv.getFactSlot("nombre").toString()));
+            diagnostic.setImage(getImage(fv.getFactSlot("nombre").toString()));
+
         } catch (Exception e1) {
             e1.printStackTrace();
         }
-
+        clipsEnvironment.reset();
         return diagnostic;
+    }
+    private String getImage(String nombre){
+        ArrayList<String> images = new ArrayList<>();
+        switch(nombre){
+            case "lunar-benigno":
+                return "benigno.jpg";
+            case "nevo-verrugoso":
+                return null;
+            case "queratosis-seborreica":
+                return null;
+            case "queratosis-actinica":
+                return "actinica_1.jpg";
+            case "verruga-vulgar":
+                return null;
+            case "posible-tumor-maligno":
+                return null;
+            case "posible-lunar-benigno":
+                return "benigno.jpg";
+            case "posible-alergia":
+                return "alergia_2.jpg";
+            default:
+                return null;
+        }
+    }
+
+    private String parseNombre(String nombre){
+        switch(nombre){
+            case "lunar-benigno":
+                return "Lunar Benigno";
+            case "nevo-verrugoso":
+                return "Nevo Verrugoso";
+            case "queratosis-seborreica":
+                return "Queratosis Seborreica";
+            case "queratosis-actinica":
+                return "queratosis Actinica";
+            case "verruga-vulgar":
+                return "Verruga Vulgar";
+            case "posible-tumor-maligno":
+                return "Posible Tumor Maligno";
+            case "posible-lunar-benigno":
+                return "Posible Lunar Benigno";
+            case "posible-alergia":
+                return "Posible Alergia";
+            default:
+                return "Hacer más estudios";
+        }
+    }
+
+    private String parseResultado(String accion){
+        switch(accion){
+            case "se-necesitan-mas-estudios":
+                return "Se necesitan mas estudios";
+            case "diagnostico-realizado":
+                return "Diagnostico realizado";
+            default:
+                return "Se necesitan mas estudios";
+        }
+    }
+
+    private String parseAccion(String accion) {
+        switch (accion) {
+            case "controlar":
+                return "Controlar";
+            case "biopsia":
+                return "Biopsia";
+            case "extraccion":
+                return "Extraccion";
+            case "tratamiento":
+                return "Tratamiento";
+            case "diagnostico-exitoso":
+                return "Diagnostico exitoso";
+            case "extraccion-previo-control":
+                return "Extraccion previo control";
+            default:
+                return "Se necesitan mas estudios";
+        }
     }
 
     public DiagnosticDTO save(DiagnosticDTO diagnostic){

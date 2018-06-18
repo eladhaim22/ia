@@ -35,6 +35,7 @@ public class DiagnosticMapper {
         diagnostic.setAccion(diagnosticDTO.getAccion());
         diagnostic.setResultado(diagnosticDTO.getResultado());
         diagnostic.setNombre(diagnosticDTO.getNombre());
+        diagnostic.setImage(diagnosticDTO.getImage());
         return diagnostic;
     }
 
@@ -53,6 +54,7 @@ public class DiagnosticMapper {
         diagnosticDTO.setResultado(diagnostic.getResultado());
         diagnosticDTO.setNombre(diagnostic.getNombre());
         diagnosticDTO.setPersonId(diagnostic.getPerson().getId());
+        diagnosticDTO.setImage(diagnostic.getImage());
         return diagnosticDTO;
     }
 

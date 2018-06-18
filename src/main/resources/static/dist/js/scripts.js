@@ -2,6 +2,18 @@ $( document ).ready(function() {
     //index.html
     var person = {};
     actualDiagnostic = {};
+
+    $("#srch-term").focus();
+
+    $("#srch-term").keypress(function(event){
+
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13'){
+            $("#searchFormButton").click();
+        }
+        event.stopPropagation();
+    });
+
     $("#searchFormButton").click(function() {
         $('#panel-parameters').addClass("hide");
         $('#person-details').addClass("hide");
@@ -86,6 +98,8 @@ $( document ).ready(function() {
         actualDiagnostic.form.borde= 'nose';
         actualDiagnostic.nombre = '';
         actualDiagnostic.resultado = '';
+        actualDiagnostic.accion = '';
+        actualDiagnostic.image=""
     }
 
     function refreshDiagnostic(){
@@ -105,6 +119,15 @@ $( document ).ready(function() {
         $('#mancha-borde').val(actualDiagnostic.form.borde);
         $('h1#nombre').text(actualDiagnostic.nombre);
         $('p#resultado').text(actualDiagnostic.resultado);
+        $('p#accion').text(actualDiagnostic.accion);
+        if(actualDiagnostic.image) {
+            $('#image').attr("src", "/images/" + actualDiagnostic.image);
+            $('#image').css({height: '200px',float: 'right'});
+        }
+        else{
+            $('#image').attr("src","");
+            $('#image').css({height: '',float: ''});
+        }
     }
 
     function getDiagnosticFromField(){
@@ -144,6 +167,7 @@ $( document ).ready(function() {
                 actualDiagnostic.resultado = data.resultado;
                 actualDiagnostic.accion = data.accion;
                 actualDiagnostic.nombre = data.nombre;
+                actualDiagnostic.image = data.image;
                 refreshDiagnostic();
                 if($('#disabledSelect option:selected').attr("value") == "new") {
                     $('#disabledSelect').append($('<option>', {
@@ -156,36 +180,6 @@ $( document ).ready(function() {
         });
     });
 
-    /*$('#diagnosticSaveButton').click(function () {
-        getDiagnosticFromField();
-        if(!$('#disabledSelect option:selected').attr("value")) {
-            actualDiagnostic.date = new Date();
-            person.diagnosticList.push(actualDiagnostic);
-            actualDiagnostic.personId = person.id;
-        }
-        $.ajax({
-            type: 'POST',
-            url: '/diagnostic/diagnostic',
-            data:JSON.stringify(actualDiagnostic),
-            dataType: 'json',
-            contentType: 'application/json',
-            success: function(data) {
-                actualDiagnostic.id = data.id;
-                actualDiagnostic.resultado = data.resultado;
-                actualDiagnostic.accion = data.accion;
-                actualDiagnostic.nombre = data.nombre;
-                refreshDiagnostic();
-                if(!$('#disabledSelect option:selected').attr("value")) {
-                    $('#disabledSelect').append($('<option>', {
-                        value: actualDiagnostic.id,
-                        text: new Date(actualDiagnostic.date).toDateString()
-                    }));
-                    $('#disabledSelect').val(actualDiagnostic.id);
-                }
-                alert('El diagnostico se salvo exitosamente');
-            }
-        });
-    });*/
     //alta-usuario.html
     $('#savePersonButton').click(function () {
         var newPerson ={};

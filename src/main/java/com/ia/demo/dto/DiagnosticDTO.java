@@ -3,7 +3,9 @@ package com.ia.demo.dto;
 import com.ia.demo.domain.Form;
 import com.ia.demo.domain.Stain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class DiagnosticDTO {
     private Long id;
@@ -14,26 +16,13 @@ public class DiagnosticDTO {
     private String resultado;
     private String accion;
     private String antecedentes;
+    private String image;
 
     private Long personId;
     private Stain stain = new Stain();
     private Form form = new Form();
 
     public DiagnosticDTO() {
-    }
-
-    public DiagnosticDTO(Long id, Date date, String nombre, String cuidados, String motivoConsulta, String resultado, String accion, String antecedentes, Long personId, Stain stain, Form form) {
-        this.id = id;
-        this.date = date;
-        this.nombre = nombre;
-        this.cuidados = cuidados;
-        this.motivoConsulta = motivoConsulta;
-        this.resultado = resultado;
-        this.accion = accion;
-        this.antecedentes = antecedentes;
-        this.personId = personId;
-        this.stain = stain;
-        this.form = form;
     }
 
     public Long getId() {
@@ -122,5 +111,13 @@ public class DiagnosticDTO {
 
     public void setForm(Form form) {
         this.form = form;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

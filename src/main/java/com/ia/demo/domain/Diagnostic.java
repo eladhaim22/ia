@@ -15,6 +15,7 @@ public class Diagnostic {
     private String resultado;
     private String accion;
     private String antecedentes;
+    private String image;
 
     @ManyToOne
     @JoinColumn(name="personId")
@@ -112,5 +113,13 @@ public class Diagnostic {
 
     public void setAntecedentes(String antecedentes) {
         this.antecedentes = antecedentes;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

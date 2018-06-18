@@ -18,7 +18,7 @@ public class DiagnositcController {
     @PostMapping(value="diagnostic")
     public ResponseEntity<?> getDiagnostic(@RequestBody DiagnosticDTO diagnosticDTO){
         DiagnosticDTO diagnostic = diagnosticService.calculateDiagnostic(diagnosticDTO);
-        return new ResponseEntity<>( diagnosticService.save(diagnostic),HttpStatus.OK);
+        return new ResponseEntity<>(diagnosticService.save(diagnostic),HttpStatus.OK);
     }
 
     @GetMapping(value="{id}")
