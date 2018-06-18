@@ -3,6 +3,9 @@ $( document ).ready(function() {
     var person = {};
     actualDiagnostic = {};
     $("#searchFormButton").click(function() {
+        $('#panel-parameters').addClass("hide");
+        $('#person-details').addClass("hide");
+        $('.parameters').addClass("hide");
         $.ajax({
             type: 'GET',
             url: '/person/' + $('#srch-term').val(),
@@ -14,6 +17,8 @@ $( document ).ready(function() {
                     person.dni = data.dni;
                     person.diagnosticList = data.diagnosticList;
                     refreshFields();
+                    $('#panel-parameters').removeClass("hide");
+                    $('#person-details').removeClass("hide");
                 },
                 error:function(error) {
                     if (!$('span#search-message').length > 0) {
@@ -35,41 +40,50 @@ $( document ).ready(function() {
             .find('option')
             .remove()
             .end()
-            .append('<option>Nueva</option>');
+            .append('<option value="">---</option>')
+            .append('<option value="new">Nueva</option>');
         $.each(person.diagnosticList, function (i, item) {
             $('#disabledSelect').append($('<option>', {
                 value: item.id,
-                text : new Date(item.date).toDateString()
+                text : moment(item.date).format('lll')
             }));
         });
     }
 
     $('#disabledSelect').on('change', function() {
-        if(this.value) {
+        if(this.value && this.value != "new") {
             actualDiagnostic = person.diagnosticList.filter(d => d.id == this.value)[0];
+            $(".parameters").removeClass('hide');
+            refreshDiagnostic();
+        }
+        else if(this.value == "new"){
+            actualDiagnostic={};
+            $(".parameters").removeClass('hide');
+            resetDiagnostic();
+            refreshDiagnostic();
         }
         else{
-            actualDiagnostic={};
-            resetDiagnostic();
+            $(".parameters").addClass('hide');
         }
-        refreshDiagnostic();
     });
 
     function resetDiagnostic(){
-        actualDiagnostic.antecedentes = 'NoSe';
-        actualDiagnostic.cuidados = 'NoSe';
-        actualDiagnostic.motivoConsulta = 'NoSe';
-        actualDiagnostic.stain.color = 'NoSe';
-        actualDiagnostic.stain.evolucion = 'NoSe';
-        actualDiagnostic.stain.origin = 'NoSe';
-        actualDiagnostic.stain.sintoma= 'NoSe';
-        actualDiagnostic.stain.pelos = 'NoSe';
-        actualDiagnostic.stain.rasposa = 'NoSe';
-        actualDiagnostic.form.asimetria = 'NoSe';
-        actualDiagnostic.form.superficie = 'NoSe';
-        actualDiagnostic.form.diametro = 'NoSe';
-        actualDiagnostic.form.elevada = 'NoSe';
-        actualDiagnostic.form.borde= 'NoSe';
+        actualDiagnostic.antecedentes = 'nose';
+        actualDiagnostic.cuidados = 'nose';
+        actualDiagnostic.motivoConsulta = 'nose';
+        actualDiagnostic.stain = {};
+        actualDiagnostic.stain.color = 'nose';
+        actualDiagnostic.stain.evolucion = 'nose';
+        actualDiagnostic.stain.origin = 'nose';
+        actualDiagnostic.stain.sintoma= 'nose';
+        actualDiagnostic.stain.pelos = 'nose';
+        actualDiagnostic.stain.rasposa = 'nose';
+        actualDiagnostic.form = {};
+        actualDiagnostic.form.asimetria = 'nose';
+        actualDiagnostic.form.superficie = 'nose';
+        actualDiagnostic.form.diametro = 0.0;
+        actualDiagnostic.form.elevada = 'nose';
+        actualDiagnostic.form.borde= 'nose';
         actualDiagnostic.nombre = '';
         actualDiagnostic.resultado = '';
     }
@@ -114,6 +128,11 @@ $( document ).ready(function() {
 
     $('#diagnosticButton').click(function(){
         getDiagnosticFromField();
+        if($('#disabledSelect option:selected').attr("value") == "new") {
+            actualDiagnostic.date = new Date();
+            person.diagnosticList.push(actualDiagnostic);
+            actualDiagnostic.personId = person.id;
+        }
         $.ajax({
             type: 'POST',
             url: '/diagnostic/diagnostic',
@@ -121,18 +140,23 @@ $( document ).ready(function() {
             dataType: 'json',
             contentType:'application/json',
             success: function(data){
+                actualDiagnostic.id = data.id;
                 actualDiagnostic.resultado = data.resultado;
                 actualDiagnostic.accion = data.accion;
                 actualDiagnostic.nombre = data.nombre;
                 refreshDiagnostic();
-            },
-            error:function(error){
-                $('.login-panel.panel.panel-default .panel-body').append('<span id="search-message">No existe el paciente. <a href="/alta-usuario">Cargar usuario</a></span>')
+                if($('#disabledSelect option:selected').attr("value") == "new") {
+                    $('#disabledSelect').append($('<option>', {
+                        value: actualDiagnostic.id,
+                        text : moment(actualDiagnostic.date).format('lll')
+                    }));
+                    $('#disabledSelect').val(actualDiagnostic.id);
+                }
             }
         });
     });
 
-    $('#diagnosticSaveButton').click(function () {
+    /*$('#diagnosticSaveButton').click(function () {
         getDiagnosticFromField();
         if(!$('#disabledSelect option:selected').attr("value")) {
             actualDiagnostic.date = new Date();
@@ -161,7 +185,7 @@ $( document ).ready(function() {
                 alert('El diagnostico se salvo exitosamente');
             }
         });
-    });
+    });*/
     //alta-usuario.html
     $('#savePersonButton').click(function () {
         var newPerson ={};
@@ -173,10 +197,9 @@ $( document ).ready(function() {
                 type: 'POST',
                 url: '/person/',
                 data: JSON.stringify(newPerson),
-                dataType: 'json',
                 contentType: 'application/json',
                 success: function (data) {
-                    alert('La persona ha creado exitosamente.')
+                    alert('La persona ha creado exitosamente.');
                 },
                 error:function(error){
                     alert('La persona ya existe.')
