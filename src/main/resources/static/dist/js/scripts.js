@@ -15,36 +15,42 @@ $( document ).ready(function() {
     });
 
     $("#searchFormButton").click(function() {
-        $('#panel-parameters').addClass("hide");
-        $('#person-details').addClass("hide");
-        $('.parameters').addClass("hide");
-        if($('#srch-term').val()) {
-            $.ajax({
-                type: 'GET',
-                url: '/person/' + $('#srch-term').val(),
-                dataType: 'json',
-                success: function (data) {
-                    person.id = data.id;
-                    person.firstName = data.firstName;
-                    person.lastName = data.lastName;
-                    person.dni = data.dni;
-                    person.diagnosticList = data.diagnosticList;
-                    refreshFields();
-                    $('#panel-parameters').removeClass("hide");
-                    $('#person-details').removeClass("hide");
-                },
-                error: function (error) {
-                    if (!$('span#search-message').length > 0) {
-                        $('.login-panel.panel.panel-default .panel-body').append('<span id="search-message">No existe el paciente. <a href="/alta-usuario">Cargar usuario</a></span>')
+        activateLoader();
+        setTimeout(function() {
+            $('#panel-parameters').addClass("hide");
+            $('#person-details').addClass("hide");
+            $('.parameters').addClass("hide");
+            if ($('#srch-term').val()) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/person/' + $('#srch-term').val(),
+                    dataType: 'json',
+                    success: function (data) {
+                        person.id = data.id;
+                        person.firstName = data.firstName;
+                        person.lastName = data.lastName;
+                        person.dni = data.dni;
+                        person.diagnosticList = data.diagnosticList;
+                        refreshFields();
+                        $('#panel-parameters').removeClass("hide");
+                        $('#person-details').removeClass("hide");
+                    },
+                    error: function (error) {
+                        if (!$('span#search-message').length > 0) {
+                            $('.login-panel.panel.panel-default .panel-body').append('<span id="search-message">No existe el paciente. <a href="/alta-usuario">Cargar usuario</a></span>')
+                        }
+                    },
+                    complete:function(){
+                        deactivateLoader();
                     }
-                }
-            });
-        }
-        else{
-            if (!$('span#search-message').length > 0) {
-                $('.login-panel.panel.panel-default .panel-body').append('<span id="search-message">No existe el paciente. <a href="/alta-usuario">Cargar usuario</a></span>')
+                });
             }
-        }
+            else {
+                if (!$('span#search-message').length > 0) {
+                    $('.login-panel.panel.panel-default .panel-body').append('<span id="search-message">No existe el paciente. <a href="/alta-usuario">Cargar usuario</a></span>')
+                }
+            }
+        },200);
     });
 
     $('#srch-term').change(function(){
@@ -125,8 +131,19 @@ $( document ).ready(function() {
         $('#mancha-elevada').val(actualDiagnostic.form.elevada);
         $('#mancha-borde').val(actualDiagnostic.form.borde);
         $('h1#nombre').text(actualDiagnostic.nombre);
-        $('p#resultado').text(actualDiagnostic.resultado);
-        $('p#accion').text(actualDiagnostic.accion);
+        if(actualDiagnostic.nombre != "Sin Diagnostico") {
+            $('p#resultado').text(actualDiagnostic.resultado);
+            if (actualDiagnostic.accion) {
+                $('div#accionDiv').show();
+                $('p#accion').text(actualDiagnostic.accion);
+            }
+            else {
+                $('div#accionDiv').hide();
+            }
+        }
+        else{
+            $('p#resultado').text('No se pudo hacer un diagnostico, por favor mejore los parámetros de entrada.');
+        }
         if(actualDiagnostic.image) {
             $('#image').attr("src", "/images/" + actualDiagnostic.image);
             $('#image').css({height: '200px',float: 'right'});
@@ -156,35 +173,52 @@ $( document ).ready(function() {
         actualDiagnostic.form.borde= $('#mancha-borde').val();
     }
 
+    function activateLoader(){
+        $('#loading').show();
+        $('#page-wrapper').css({opacity: 0.4});
+    }
+
+    function deactivateLoader(){
+        $('#loading').hide();
+        $('#page-wrapper').css({opacity: 1});
+    }
+
     $('#diagnosticButton').click(function(){
         getDiagnosticFromField();
-        if($('#disabledSelect option:selected').attr("value") == "new") {
-            actualDiagnostic.date = new Date();
-            person.diagnosticList.push(actualDiagnostic);
-            actualDiagnostic.personId = person.id;
-        }
-        $.ajax({
-            type: 'POST',
-            url: '/diagnostic/diagnostic',
-            data:JSON.stringify(actualDiagnostic),
-            dataType: 'json',
-            contentType:'application/json',
-            success: function(data){
-                actualDiagnostic.id = data.id;
-                actualDiagnostic.resultado = data.resultado;
-                actualDiagnostic.accion = data.accion;
-                actualDiagnostic.nombre = data.nombre;
-                actualDiagnostic.image = data.image;
-                refreshDiagnostic();
-                if($('#disabledSelect option:selected').attr("value") == "new") {
-                    $('#disabledSelect').append($('<option>', {
-                        value: actualDiagnostic.id,
-                        text : moment(actualDiagnostic.date).format('lll')
-                    }));
-                    $('#disabledSelect').val(actualDiagnostic.id);
-                }
+        activateLoader();
+        setTimeout(function() {
+            if ($('#disabledSelect option:selected').attr("value") == "new") {
+                actualDiagnostic.date = new Date();
+                person.diagnosticList.push(actualDiagnostic);
+                actualDiagnostic.personId = person.id;
             }
-        });
+            $.ajax({
+                type: 'POST',
+                url: '/diagnostic/diagnostic',
+                data: JSON.stringify(actualDiagnostic),
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data) {
+                    actualDiagnostic.id = data.id;
+                    actualDiagnostic.resultado = data.resultado;
+                    actualDiagnostic.accion = data.accion;
+                    actualDiagnostic.nombre = data.nombre;
+                    actualDiagnostic.image = data.image;
+                    refreshDiagnostic();
+                    if ($('#disabledSelect option:selected').attr("value") == "new") {
+                        $('#disabledSelect').append($('<option>', {
+                            value: actualDiagnostic.id,
+                            text: moment(actualDiagnostic.date).format('lll')
+                        }));
+                        $('#disabledSelect').val(actualDiagnostic.id);
+                    }
+                },
+                complete: function () {
+                    deactivateLoader();
+                    $(document).scrollTop( $("#wrapper_diagnostic").offset().top );
+                }
+            });
+        },200);
     });
 
     //alta-usuario.html
@@ -194,11 +228,11 @@ $( document ).ready(function() {
             form : '#savePersonForm',
             onError : function() {
                 console.log("Falló la validación del formulario");
-                $('#loading').hide();
+                deactivateLoader();
             },
             onSuccess : function() {
                 $('#savePersonButton').attr('disabled','disabled');
-                $('#loading').show();
+                activateLoader();
                 console.log("Form válido!");
 
                 //guardar persona:
@@ -217,7 +251,7 @@ $( document ).ready(function() {
                             $('#savePersonButton').removeAttr("disabled");
                             $('#save-person-success').show();
                             $('#save-person-error').hide();
-                            $('#loading').hide();
+                            deactivateLoader();
                             $('#savePersonButton').attr('disabled','disabled');
                         },
                         error:function(error){
@@ -225,12 +259,10 @@ $( document ).ready(function() {
                             $('#save-person-success').hide();
                             $('#save-person-error').show();
                             console.log("error");
-                            $('#loading').hide();
+                            deactivateLoader();
                         }
                     });
                 }
-
-
                 return false; // Will stop the submission of the form
             }
         });

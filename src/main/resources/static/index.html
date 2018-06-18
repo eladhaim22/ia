@@ -46,16 +46,7 @@
                 </button>
                 <a class="navbar-brand" href="index.html">SmartSkin</a>
             </div>
-            <!-- /.navbar-header -->		
-
-            <ul class="nav navbar-top-links navbar-right">
-				<li>
-					<a class="text-center" title="Salir" href="#">
-						<i class="fa fa-sign-out"></i>
-					</a>
-				</li>
-            </ul>
-            <!-- /.navbar-top-links -->
+            <!-- /.navbar-header -->
         </nav>
 
         <div id="page-wrapper">
@@ -271,7 +262,6 @@
 															<option value="plana">Plana</option>
 															<option value="escamosa">Escamosa</option>
 															<option value="rugosa">Rugosa</option>
-															<option value="lisa">Lisa</option>
 														</select>
 													</div>
 												</div>
@@ -335,8 +325,8 @@
                         <div class="panel-body">
 							<div class="col-lg-6">
 								<h1 id="nombre"></h1>
-								<p id="resultado"></p>
-								<p id="accion"></p>
+								<div id="accionDiv">Acción sugerida: <p style="display:inline-block" id="accion"></p></div>
+								<div id="resultadoDiv" style="display:inline-block"><p style="display:inline-block" id="resultado"></p></div>
 							</div>
 							<div class="col-lg-6">
 								<img id="image" class="rounded" src="">

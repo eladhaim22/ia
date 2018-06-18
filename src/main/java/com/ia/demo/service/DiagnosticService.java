@@ -142,37 +142,37 @@ public class DiagnosticService {
             case "posible-alergia":
                 return "Posible Alergia";
             default:
-                return "Hacer más estudios";
+                return "Sin Diagnostico";
         }
     }
 
     private String parseResultado(String accion){
         switch(accion){
             case "se-necesitan-mas-estudios":
-                return "Se necesitan mas estudios";
+                return "Se aconseja hacer mas estudios para mejor precisión.";
             case "diagnostico-realizado":
-                return "Diagnostico realizado";
+                return "Diagnostico realizado.";
             default:
-                return "Se necesitan mas estudios";
+                return "Se aconsejan hacer mas estudios para mejor precisión.";
         }
     }
 
     private String parseAccion(String accion) {
         switch (accion) {
             case "controlar":
-                return "Controlar";
+                return "Controlar.";
             case "biopsia":
-                return "Biopsia";
+                return "Biopsia.";
             case "extraccion":
-                return "Extraccion";
+                return "Extraccion.";
             case "tratamiento":
-                return "Tratamiento";
+                return "Tratamiento.";
             case "diagnostico-exitoso":
-                return "Diagnostico exitoso";
+                return "";
             case "extraccion-previo-control":
-                return "Extraccion previo control";
+                return "Extraccion previo control.";
             default:
-                return "Se necesitan mas estudios";
+                return "";
         }
     }
 
