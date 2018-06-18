@@ -105,15 +105,15 @@ public class DiagnosticService {
             case "lunar-benigno":
                 return "benigno.jpg";
             case "nevo-verrugoso":
-                return null;
+                return "nevo_1.jpg";
             case "queratosis-seborreica":
-                return null;
+                return "seborreica_2.jpg";
             case "queratosis-actinica":
                 return "actinica_1.jpg";
             case "verruga-vulgar":
-                return null;
+                return "verruga_1.jpg";
             case "posible-tumor-maligno":
-                return null;
+                return "maligno.jpg";
             case "posible-lunar-benigno":
                 return "benigno.jpg";
             case "posible-alergia":

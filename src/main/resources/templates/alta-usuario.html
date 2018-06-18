@@ -3,133 +3,143 @@
 
 <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
 
-    <title>SmartSkin</title>
+	<title>Ayudante para el Diagnóstico Diferencial de Manchas en la piel</title>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Bootstrap Core CSS -->
+	<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- MetisMenu CSS -->
-    <link href="vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+	<!-- MetisMenu CSS -->
+	<link href="vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
 
-    <!-- Custom CSS -->
-    <link href="dist/css/sb-admin-2.css" rel="stylesheet">
+	<!-- Custom CSS -->
+	<link href="dist/css/sb-admin-2.css" rel="stylesheet">
 
-    <!-- Morris Charts CSS -->
-    <link href="vendor/morrisjs/morris.css" rel="stylesheet">
+	<!-- Morris Charts CSS -->
+	<link href="vendor/morrisjs/morris.css" rel="stylesheet">
 
-    <!-- Custom Fonts -->
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
+	<!-- Custom Fonts -->
+	<link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
+<div id="loading" class="loading">
+	<i class="fa-li fa fa-spinner fa-spin"></i>
+</div>
+<div id="wrapper">
 
-    <div id="wrapper">
+	<!-- Navigation -->
+	<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="../static/index.html">Ayudante DiDiMaPi</a>
+		</div>
+		<!-- /.navbar-header -->
 
-        <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="../static/index.html">SmartSkin</a>
-            </div>
-            <!-- /.navbar-header -->		
+		<ul class="nav navbar-top-links navbar-right">
+			<li>
+				<a class="text-center" title="Salir" href="#">
+					<i class="fa fa-sign-out"></i>
+				</a>
+			</li>
+		</ul>
+		<!-- /.navbar-top-links -->
+	</nav>
 
-            <ul class="nav navbar-top-links navbar-right">
-				<li>
-					<a class="text-center" title="Salir" href="#">
-						<i class="fa fa-sign-out"></i>
-					</a>
-				</li>
-            </ul>
-            <!-- /.navbar-top-links -->
-        </nav>
-
-        <div id="page-wrapper">
-            <div class="row">
-				<div class="row" id="wrapper_newuser">
-					<div class="col-lg-12">
-						<div class="panel panel-default login-panel">
-							<div class="panel-body">
-								<div class="row">
-									<div class="col-lg-12">
+	<div id="page-wrapper">
+		<div class="row">
+			<div class="row" id="wrapper_newuser">
+				<div class="col-lg-12">
+					<div class="panel panel-default login-panel">
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-lg-12">
+									<form id="savePersonForm">
+										<div id="save-person-success" class="alert alert-success" style="display:none">
+											Paciente guardado con éxito. <a href="index.html" class="alert-link">ir a diagnosticar.</a>.
+										</div>
+										<div id="save-person-error" class="alert alert-danger" style="display:none">
+											Se ha producido un error.
+										</div>
 										<div class="panel panel-default">
 											<div class="panel-body">
-												<div class="col-lg-2">
-													<div class="form-group">
-														<label>DNI</label>
-														<input class="form-control" id="personDni" data-validation="number">
+												<div class="row">
+													<div class="col-lg-2">
+														<div class="form-group">
+															<label>DNI</label>
+															<input class="form-control" id="personDni" data-validation="number" data-validation-length="8-8" data-validation-error-msg="El DNI solo admite 8 caraceteres numéricos.">
+														</div>
 													</div>
 												</div>
-												<div class="col-lg-3">
-													<div class="form-group">
-														<label>Nombre</label>
-														<input class="form-control" id="personNombre" data-validation="length" data-validation-length="10-100">
+												<div class="row">
+													<div class="col-lg-3">
+														<div class="form-group">
+															<label>Nombre</label>
+															<input class="form-control" id="personNombre" data-validation="length" data-validation-length="2-100" data-validation-error-msg="Inválido">
+														</div>
 													</div>
-												</div>
-												<div class="col-lg-3">
-													<div class="form-group">
-														<label>Apellido</label>
-														<input class="form-control" id="personApellido" data-validation="length" data-validation-length="10-100"	>
+													<div class="col-lg-3">
+														<div class="form-group">
+															<label>Apellido</label>
+															<input class="form-control" id="personApellido" data-validation="length" data-validation-length="2-100"	data-validation-error-msg="Inválido">
+														</div>
 													</div>
+													</row>
 												</div>
 											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-lg-12">
-										<button id="savePersonButton" class="btn btn-default">Guardar</button>
-										<a href="/"><button class="btn btn-default">Volver</button></a>
-									</div>
+									</form>
 								</div>
 							</div>
-							<!-- /.panel-body -->
+							<div class="row">
+								<div class="col-lg-12">
+									<button id="savePersonButton" class="btn btn-default">Guardar</button>
+									<a href="/"><button class="btn btn-default">Volver</button></a>
+									<i id="loading" style="display:none" class="fa-li fa fa-spinner fa-spin"></i>
+								</div>
+							</div>
 						</div>
-						<!-- /.panel -->
+						<!-- /.panel-body -->
 					</div>
-					<!-- /.col-lg-12 -->
+					<!-- /.panel -->
 				</div>
+				<!-- /.col-lg-12 -->
 			</div>
 		</div>
-        <!-- /#page-wrapper -->
+	</div>
+	<!-- /#page-wrapper -->
 
-    </div>
-    <!-- /#wrapper -->
+</div>
+<!-- /#wrapper -->
 
-    <!-- jQuery -->
-    <script src="vendor/jquery/jquery.min.js"></script>
+<!-- jQuery -->
+<script src="vendor/jquery/jquery.min.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="vendor/metisMenu/metisMenu.min.js"></script>
+<!-- Metis Menu Plugin JavaScript -->
+<script src="vendor/metisMenu/metisMenu.min.js"></script>
 
 
-    <!-- Custom Theme JavaScript -->
-    <script src="dist/js/sb-admin-2.js"></script>
-	
-	
-    <script src="vendor/formvalidator/jquery.form-validator.min.js"></script>
-	
-	<script>
-	$( document ).ready(function() {
-		$.validate();
-	});
-	</script>
-	<script src="dist/js/scripts.js"></script>
+<!-- Custom Theme JavaScript -->
+<script src="dist/js/sb-admin-2.js"></script>
+
+
+<script src="vendor/formvalidator/jquery.form-validator.min.js"></script>
+
+<script src="dist/js/scripts.js"></script>
 
 </body>
 
 </html>
+

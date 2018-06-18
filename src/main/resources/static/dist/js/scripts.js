@@ -18,11 +18,12 @@ $( document ).ready(function() {
         $('#panel-parameters').addClass("hide");
         $('#person-details').addClass("hide");
         $('.parameters').addClass("hide");
-        $.ajax({
-            type: 'GET',
-            url: '/person/' + $('#srch-term').val(),
-            dataType: 'json',
-            success: function(data){
+        if($('#srch-term').val()) {
+            $.ajax({
+                type: 'GET',
+                url: '/person/' + $('#srch-term').val(),
+                dataType: 'json',
+                success: function (data) {
                     person.id = data.id;
                     person.firstName = data.firstName;
                     person.lastName = data.lastName;
@@ -32,12 +33,18 @@ $( document ).ready(function() {
                     $('#panel-parameters').removeClass("hide");
                     $('#person-details').removeClass("hide");
                 },
-                error:function(error) {
+                error: function (error) {
                     if (!$('span#search-message').length > 0) {
                         $('.login-panel.panel.panel-default .panel-body').append('<span id="search-message">No existe el paciente. <a href="/alta-usuario">Cargar usuario</a></span>')
                     }
                 }
-        });
+            });
+        }
+        else{
+            if (!$('span#search-message').length > 0) {
+                $('.login-panel.panel.panel-default .panel-body').append('<span id="search-message">No existe el paciente. <a href="/alta-usuario">Cargar usuario</a></span>')
+            }
+        }
     });
 
     $('#srch-term').change(function(){
@@ -181,30 +188,55 @@ $( document ).ready(function() {
     });
 
     //alta-usuario.html
-    $('#savePersonButton').click(function () {
-        var newPerson ={};
-        newPerson.firstName = $('#personNombre').val();
-        newPerson.lastName = $('#personApellido').val();
-        newPerson.dni = $('#personDni').val();
-        if(newPerson.firstName && newPerson.lastName && newPerson.dni) {
-            $.ajax({
-                type: 'POST',
-                url: '/person/',
-                data: JSON.stringify(newPerson),
-                contentType: 'application/json',
-                success: function (data) {
-                    alert('La persona ha creado exitosamente.');
-                },
-                error:function(error){
-                    alert('La persona ya existe.')
-                },
-                complete: function (data) {
-                    var newPerson ={};
-                    $('#personNombre').val('');
-                    $('#personApellido').val('');
-                    $('#personDni').val('');
+    //valida formulario de alta y ejecuta la acción de guardar
+    if ($("#savePersonForm").length == 1) {
+        $.validate({
+            form : '#savePersonForm',
+            onError : function() {
+                console.log("Falló la validación del formulario");
+                $('#loading').hide();
+            },
+            onSuccess : function() {
+                $('#savePersonButton').attr('disabled','disabled');
+                $('#loading').show();
+                console.log("Form válido!");
+
+                //guardar persona:
+                var newPerson ={};
+                newPerson.firstName = $('#personNombre').val();
+                newPerson.lastName = $('#personApellido').val();
+                newPerson.dni = $('#personDni').val();
+                if(newPerson.firstName && newPerson.lastName && newPerson.dni) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/person/',
+                        data: JSON.stringify(newPerson),
+                        contentType: 'application/json',
+                        success: function (data) {
+                            console.log("aca");
+                            $('#savePersonButton').removeAttr("disabled");
+                            $('#save-person-success').show();
+                            $('#save-person-error').hide();
+                            $('#loading').hide();
+                            $('#savePersonButton').attr('disabled','disabled');
+                        },
+                        error:function(error){
+                            $('#savePersonButton').removeAttr("disabled");
+                            $('#save-person-success').hide();
+                            $('#save-person-error').show();
+                            console.log("error");
+                            $('#loading').hide();
+                        }
+                    });
                 }
-            });
-        }
+
+
+                return false; // Will stop the submission of the form
+            }
+        });
+    }
+
+    $('#savePersonButton').click(function () {
+        $('#savePersonForm').submit();
     });
 });
