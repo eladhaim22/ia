@@ -137,6 +137,7 @@
 							plana
 							escamosa
 							rugosa
+							lisa
 							nose
 			)
 		(default nose)
@@ -164,6 +165,12 @@
 
 ;DEFRULES -----------------------------------------------
 
+(defrule r00-motivo-consulta-simple
+	?A<-(paciente (motivo-consulta nose))
+	=>
+	(modify ?A (motivo-consulta simple))
+)
+
 (defrule r01-origen-nacimiento
 	?A<-(mancha (pelos si) (origen nose))
 	=>
@@ -171,12 +178,16 @@
 )
 
 (defrule r02-diagnostico-benigno-realizado-control
-	?F<-(forma (diametro ?d))
+	?F<-(forma (diametro ?d) (asimetria ?a) (superficie ?sp))
 	?P<-(paciente (motivo-consulta simple))
 	?M<-(mancha (color piel) (sintoma ?s))
 	?D<-(diagnostico (resultado nose))
 	(test (and 	(< ?d 1)
-				(neq ?s dolor)))
+				(neq ?s asintomatico)))
+	(test (or 	(neq ?a nose)
+				(neq ?a simetrico)))
+	(test (or 	(neq ?sp nose)
+				(neq ?sp plana)))				
 	=>
 	(modify ?D (nombre posible-lunar-benigno)(resultado diagnostico-realizado)(accion controlar))
 )
@@ -431,6 +442,26 @@
 	(test	(and	(eq ?r nose)
 					(or	(and	(eq ?a asimetrico)
 								(eq ?e dispareja))
+						(and	(neq ?b definido)
+								(or	(eq ?si sangrado)
+									(eq ?si dolor)
+									(eq ?si picazon))))
+					(neq ?s uniforme)
+					(neq ?s plana)
+					(neq ?c mas-de-uno)
+					(neq ?an familiares-con-melanomas)))
+	=>
+	(modify ?D (nombre nose)(resultado se-necesitan-mas-estudios)(accion biopsia))
+)
+
+(defrule r21-posible-lunar-benigno
+	?F<-(forma (asimetria ?a) (elevada ?e) (superficie ?s) (borde ?b))	
+	?P<-(paciente (antecedentes-clinicos ?an))	
+	?M<-(mancha (sintoma ?si) (color ?c))	
+	?D<-(diagnostico (resultado ?r))
+	(test	(and	(eq ?r nose)
+					(or	(and	(eq ?a simetrico)
+								(eq ?e igual))
 						(and	(neq ?b definido)
 								(or	(eq ?si sangrado)
 									(eq ?si dolor)

@@ -95,7 +95,7 @@ $( document ).ready(function() {
     function resetDiagnostic(){
         actualDiagnostic.antecedentes = 'nose';
         actualDiagnostic.cuidados = 'nose';
-        actualDiagnostic.motivoConsulta = 'nose';
+        actualDiagnostic.motivoConsulta = 'simple';
         actualDiagnostic.stain = {};
         actualDiagnostic.stain.color = 'nose';
         actualDiagnostic.stain.evolucion = 'nose';
